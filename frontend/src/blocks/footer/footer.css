@@ -1,0 +1,13 @@
+@import url(__copy/footer__copy.css);
+
+.footer {
+  margin: 0 auto;
+  max-width: 882px;
+}
+
+@media screen and (max-width: 899px) {
+  .footer {
+    margin-left: 27px;
+    margin-right: 27px;
+  }
+}

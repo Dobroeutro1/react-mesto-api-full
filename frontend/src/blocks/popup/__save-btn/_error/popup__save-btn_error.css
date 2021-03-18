@@ -1,0 +1,8 @@
+.popup__save-btn_error {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.popup__save-btn_error:nth-child(n) {
+  color: rgba(0, 0, 0, 0.5);
+}

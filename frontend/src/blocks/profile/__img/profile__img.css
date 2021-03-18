@@ -1,0 +1,16 @@
+.profile__img {
+    background-image: url(../../../images/profile-edit.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    max-width: 120px;
+    max-height: 120px;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    /*transition: opacity 0.5s linear;*/
+}
+
+/*.profile__img:hover {*/
+/*    opacity: 0.2;*/
+/*}*/

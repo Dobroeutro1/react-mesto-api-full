@@ -1,0 +1,13 @@
+.auth__input {
+  background-color: black;
+  border: none;
+  border-bottom: 2px solid rgba(204, 204, 204, 1);
+  width: 100%;
+  margin: 0 0 30px;
+  padding: 13px 0;
+  color: rgba(204, 204, 204, 1);
+}
+
+.auth__input:nth-child(2) {
+  margin-bottom: 216px;
+}

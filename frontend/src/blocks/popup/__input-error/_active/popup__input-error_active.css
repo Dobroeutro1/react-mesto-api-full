@@ -1,0 +1,8 @@
+.popup__input-error_active {
+  display: flex;
+  margin-bottom: 13px;
+}
+
+.popup__input-error_active:last-of-type {
+  margin-bottom: 30px;
+}
