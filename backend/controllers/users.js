@@ -11,8 +11,8 @@ const getUsers = (req, res) => {
     );
 };
 
-const getUsersId = (req, res) => {
-  const { id } = req.params;
+const getUser = (req, res) => {
+  const { id } = req.body;
   User.findOne({ id })
     .then((user) => {
       if (!user) {
@@ -32,7 +32,7 @@ const getUsersId = (req, res) => {
 const createUser = (req, res) => {
   const { email, password, name, about, avatar } = req.body;
   bcrypt
-    .hash(password, 10)
+    .hash(password, 8)
     .then((hash) => User.create({ email, hash, name, about, avatar }))
     .then((user) => res.send(user))
     .catch((err) => {
@@ -121,7 +121,7 @@ const login = (req, res) => {
 
 module.exports = {
   getUsers,
-  getUsersId,
+  getUser,
   createUser,
   updateProfile,
   updateAvatar,
