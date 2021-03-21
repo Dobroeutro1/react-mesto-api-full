@@ -1,7 +1,9 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable linebreak-style */
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const NotFoundError = require("../errors/not-found-err");
 
 const getUsers = (req, res) => {
   User.find({})
