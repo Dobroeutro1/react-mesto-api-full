@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const router = require("./routes/router");
+const { errors } = require("celebrate");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -12,6 +14,8 @@ mongoose.connect("mongodb://localhost:27017/mestodb", {
   useFindAndModify: false,
 });
 
+app.use(requestLogger);
+
 app.use(bodyParser.json());
 app.get("/crash-test", () => {
   setTimeout(() => {
@@ -20,6 +24,9 @@ app.get("/crash-test", () => {
 });
 app.use("/", router);
 
+app.use(errorLogger);
+
+app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res.status(statusCode).send({
