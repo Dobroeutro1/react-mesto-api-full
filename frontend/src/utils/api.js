@@ -1,8 +1,6 @@
 class Api {
-  constructor({ baseUrl, authorization }, group) {
+  constructor({ baseUrl }) {
     this.baseUrl = baseUrl;
-    this.authorization = authorization;
-    this.group = group;
   }
 
   _checkResponse(res) {
@@ -13,26 +11,21 @@ class Api {
   }
 
   getUserInfo() {
-    return fetch(`${this.baseUrl}/${this.group}/users/me`, {
-      headers: {
-        authorization: `${this.authorization}`,
-      },
+    return fetch(`${this.baseUrl}/users/me`, {
+      headers: {},
     }).then(this._checkResponse);
   }
 
   getInitialCards() {
-    return fetch(`${this.baseUrl}/${this.group}/cards`, {
-      headers: {
-        authorization: `${this.authorization}`,
-      },
+    return fetch(`${this.baseUrl}/cards`, {
+      headers: {},
     }).then(this._checkResponse);
   }
 
   changeUserInfo(nameValue, aboutValue) {
-    return fetch(`${this.baseUrl}/${this.group}/users/me`, {
+    return fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
       headers: {
-        authorization: `${this.authorization}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -43,10 +36,9 @@ class Api {
   }
 
   changeUserAvatar(avatarLink) {
-    return fetch(`${this.baseUrl}/${this.group}/users/me/avatar`, {
+    return fetch(`${this.baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: {
-        authorization: `${this.authorization}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -56,10 +48,9 @@ class Api {
   }
 
   addNewCard(item) {
-    return fetch(`${this.baseUrl}/${this.group}/cards`, {
+    return fetch(`${this.baseUrl}/cards`, {
       method: "POST",
       headers: {
-        authorization: `${this.authorization}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -70,7 +61,7 @@ class Api {
   }
 
   deleteCard(cardId) {
-    return fetch(`${this.baseUrl}/${this.group}/cards/${cardId}`, {
+    return fetch(`${this.baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: {
         authorization: `${this.authorization}`,
@@ -80,7 +71,7 @@ class Api {
   }
 
   addLike(card) {
-    return fetch(`${this.baseUrl}/${this.group}/cards/likes/${card._id}`, {
+    return fetch(`${this.baseUrl}/cards/likes/${card._id}`, {
       method: "PUT",
       headers: {
         authorization: `${this.authorization}`,
@@ -90,7 +81,7 @@ class Api {
   }
 
   deleteLike(card) {
-    return fetch(`${this.baseUrl}/${this.group}/cards/likes/${card._id}`, {
+    return fetch(`${this.baseUrl}/cards/likes/${card._id}`, {
       method: "DELETE",
       headers: {
         authorization: `${this.authorization}`,
@@ -100,12 +91,8 @@ class Api {
   }
 }
 
-const api = new Api(
-  {
-    baseUrl: "http://dobroeutro.mesto.nomoredomains.icu/api",
-    authorization: "8176c3f4-76a7-481c-9a33-49a36549538f",
-  },
-  "cohort-17",
-);
+const api = new Api({
+  baseUrl: "http://dobroeutro.mesto.nomoredomains.icu/api",
+});
 
 export default api;
