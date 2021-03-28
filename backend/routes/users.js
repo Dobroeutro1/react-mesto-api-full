@@ -1,4 +1,6 @@
-const usersRouter = require("express").Router();
+const usersRouter = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
 const {
   getUser,
   getUsers,
@@ -7,55 +9,60 @@ const {
   updateAvatar,
   updateProfile,
   login,
-} = require("../controllers/users");
-const { auth } = require("../middlewares/auth");
-const { celebrate, Joi } = require("celebrate");
+} = require('../controllers/users');
+const { auth } = require('../middlewares/auth');
 
 usersRouter.post(
-  "/signup",
+  '/signup',
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
       password: Joi.string().required().min(8),
       name: Joi.string(),
       about: Joi.string(),
-      avatar: Joi.string(),
+      avatar: Joi.string().custom((value, helper) => {
+        if (validator.isUrl(value)) {
+          return value;
+        }
+
+        return helper.message('Введите правильную ссылку');
+      }),
     }),
   }),
-  createUser
+  createUser,
 );
 usersRouter.post(
-  "/signin",
+  '/signin',
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required().email(),
       password: Joi.string().required().min(8),
     }),
   }),
-  login
+  login,
 );
 usersRouter.use(auth);
-usersRouter.get("/users", getUsers);
-usersRouter.get("/users/me", getUser);
-usersRouter.get("/users/:id", getUsersId);
+usersRouter.get('/users', getUsers);
+usersRouter.get('/users/me', getUser);
+usersRouter.get('/users/:id', getUsersId);
 usersRouter.patch(
-  "/users/me",
+  '/users/me',
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().required().min(2).max(30),
       about: Joi.string().min(2).max(30),
     }),
   }),
-  updateProfile
+  updateProfile,
 );
 usersRouter.patch(
-  "/users/me/avatar",
+  '/users/me/avatar',
   celebrate({
     body: Joi.object().keys({
       avatar: Joi.string().required(),
     }),
   }),
-  updateAvatar
+  updateAvatar,
 );
 
 module.exports = usersRouter;
