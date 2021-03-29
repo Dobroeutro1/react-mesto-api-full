@@ -59,7 +59,13 @@ usersRouter.patch(
   '/users/me/avatar',
   celebrate({
     body: Joi.object().keys({
-      avatar: Joi.string().required(),
+      avatar: Joi.string().required().custom((value, helper) => {
+        if (validator.isUrl(value)) {
+          return value;
+        }
+
+        return helper.message('Введите правильную ссылку');
+      }),
     }),
   }),
   updateAvatar,

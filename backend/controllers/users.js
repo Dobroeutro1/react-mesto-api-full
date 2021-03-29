@@ -7,6 +7,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const CastError = require('../errors/cast-err');
 const ValidationError = require('../errors/validation-err');
+const ConflictError = require('../errors/conflict-err');
 
 const getUsers = (req, res) => {
   User.find({})
@@ -20,7 +21,7 @@ const getUsers = (req, res) => {
     );
 };
 
-const getUser = (req, res) => {
+const getUser = (req, res, next) => {
   const { _id } = req.user;
   User.findOne({ _id })
     .then((user) => {
@@ -40,7 +41,7 @@ const getUser = (req, res) => {
     });
 };
 
-const getUsersId = (req, res) => {
+const getUsersId = (req, res, next) => {
   const { _id } = req.params;
   User.findOne({ _id })
     .then((user) => {
@@ -80,8 +81,8 @@ const createUser = async (req, res, next) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError('Проверьте правильность введеных данных');
       }
-      if (err.name === 'MongoError' && err.code === 11000) {
-        return err.statusCode('409').send({ message: 'Такой email уже зарегистрирован' });
+      if (err.code === 11000) {
+        throw new ConflictError('Такой email уже зарегистрирован');
       }
       err.statusCode = 500;
       next(err);
@@ -91,7 +92,7 @@ const createUser = async (req, res, next) => {
     });
 };
 
-const updateProfile = (req, res) => {
+const updateProfile = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
@@ -119,7 +120,7 @@ const updateProfile = (req, res) => {
     });
 };
 
-const updateAvatar = (req, res) => {
+const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
@@ -147,7 +148,7 @@ const updateAvatar = (req, res) => {
     });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)

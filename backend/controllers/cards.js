@@ -5,7 +5,7 @@ const NotFoundError = require('../errors/not-found-err');
 const CastError = require('../errors/cast-err');
 const ValidationError = require('../errors/validation-err');
 
-const getCards = (req, res) => {
+const getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => res.status(200).send(cards))
     .catch(
@@ -17,7 +17,7 @@ const getCards = (req, res) => {
     );
 };
 
-const addCard = (req, res) => {
+const addCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id; // _id станет доступен
   Card.create({ name, link, owner })
@@ -31,7 +31,7 @@ const addCard = (req, res) => {
     });
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
@@ -49,7 +49,7 @@ const deleteCard = (req, res) => {
     });
 };
 
-const addLikeCard = (req, res) => {
+const addLikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
@@ -72,7 +72,7 @@ const addLikeCard = (req, res) => {
     });
 };
 
-const deleteLikeCard = (req, res) => {
+const deleteLikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
