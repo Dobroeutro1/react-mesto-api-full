@@ -24,7 +24,7 @@ const addCard = (req, res, next) => {
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError('Проверьте правильность введеных данных');
+        throw new ValidationError('Проверьте правильность введеных данных', next);
       }
       err.statusCode = 500;
       next(err);
@@ -35,14 +35,14 @@ const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Такой карточки не существует');
+        throw new NotFoundError('Такой карточки не существует', next);
       }
 
       return res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new CastError('Нет карточки с таким id');
+        throw new CastError('Нет карточки с таким id', next);
       }
       err.statusCode = 500;
       next(err);
@@ -57,14 +57,14 @@ const addLikeCard = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Такой карточки не существует');
+        throw new NotFoundError('Такой карточки не существует', next);
       }
 
       return res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new CastError('Нет карточки с таким id');
+        throw new CastError('Нет карточки с таким id', next);
       }
       err.statusCode = 500;
       next(err);
@@ -80,14 +80,14 @@ const deleteLikeCard = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Такой карточки не существует');
+        throw new NotFoundError('Такой карточки не существует', next);
       }
 
       return res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new CastError('Нет карточки с таким id');
+        throw new CastError('Нет карточки с таким id', next);
       }
       err.statusCode = 500;
       next(err);

@@ -26,14 +26,14 @@ const getUser = (req, res, next) => {
   User.findOne({ _id })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
+        throw new NotFoundError('Нет пользователя с таким id', next);
       }
 
       return res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new CastError('Передан не валидный id');
+        throw new CastError('Передан не валидный id', next);
       }
       err.statusCode = 500;
       next(err);
@@ -46,14 +46,14 @@ const getUsersId = (req, res, next) => {
   User.findOne({ _id })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
+        throw new NotFoundError('Нет пользователя с таким id', next);
       }
 
       return res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new CastError('Передан не валидный id');
+        throw new CastError('Передан не валидный id', next);
       }
       err.statusCode = 500;
       next(err);
@@ -79,7 +79,7 @@ const createUser = async (req, res, next) => {
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError('Проверьте правильность введеных данных');
+        throw new ValidationError('Проверьте правильность введеных данных', next);
       }
       if (err.code === 11000) {
         throw new ConflictError('Такой email уже зарегистрирован', next);
@@ -101,16 +101,16 @@ const updateProfile = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError('Пользователь не найден', next);
       }
       return res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError('Проверьте правильность введеных данных');
+        throw new ValidationError('Проверьте правильность введеных данных', next);
       }
       if (err.name === 'CastError') {
-        throw new CastError('Передан не валидный id');
+        throw new CastError('Передан не валидный id', next);
       }
       err.statusCode = 500;
       next(err);
@@ -129,16 +129,16 @@ const updateAvatar = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError('Пользователь не найден', next);
       }
       return res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError('Проверьте правильность введеных данных');
+        throw new ValidationError('Проверьте правильность введеных данных', next);
       }
       if (err.name === 'CastError') {
-        throw new CastError('Передан не валидный id');
+        throw new CastError('Передан не валидный id', next);
       }
       err.statusCode = 500;
       next(err);
