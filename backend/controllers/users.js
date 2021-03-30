@@ -82,7 +82,7 @@ const createUser = async (req, res, next) => {
         throw new ValidationError('Проверьте правильность введеных данных');
       }
       if (err.code === 11000) {
-        throw new ConflictError('Такой email уже зарегистрирован');
+        throw new ConflictError('Такой email уже зарегистрирован', next);
       }
       err.statusCode = 500;
       next(err);
@@ -160,7 +160,7 @@ const login = (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
-      err.status = 401;
+      err.statusCode = 401;
       next(err);
     });
 };
